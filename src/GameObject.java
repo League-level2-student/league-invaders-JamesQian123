@@ -14,4 +14,7 @@ public class GameObject {
 		speed = 0;
 		isActive = true;
 	}
+	void update() {
+		
+	}
 }
