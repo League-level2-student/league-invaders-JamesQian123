@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 	}
 	void updateGameState() {
+		ship.updatePos();
 		
 	}
 	void updateEndState() {
@@ -111,21 +112,57 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		if(currentState == GAME) {
 			if (e.getKeyCode()==KeyEvent.VK_UP) {
 			    System.out.println("UP");
-			}
+			    if(ship.y > 0) {
+			    	//ship.up();
+			    	ship.isMovingUp = true;
+			    	
+			    }
+			    
+			    }
+			
 			else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
 			    System.out.println("DOWN");
+			    if(ship.y < LeagueInvaders.HEIGHT-50) {
+			    	//ship.down();
+			    	ship.isMovingDown = true;
+			    }
+			    
+			    
 			}
 			else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
 			    System.out.println("RIGHT");
+			    if(ship.x < LeagueInvaders.WIDTH-50) {
+			    	//ship.right();
+			    	ship.isMovingRight = true;
+			    }
+			   
+			    
 			}
 			else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
 			    System.out.println("LEFT");
+			    if(ship.x > 0) {
+			    	//ship.left();
+			    	ship.isMovingLeft = true;
+			    }
+			   
 			}
 		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+		if (e.getKeyCode()==KeyEvent.VK_UP) {
+			ship.isMovingUp = false;
+	
+		}
+		else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+			ship.isMovingDown = false;
+		}
+		else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			ship.isMovingRight = false;
+		}
+		else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+			ship.isMovingLeft = false;
+		}
 	}
 }
