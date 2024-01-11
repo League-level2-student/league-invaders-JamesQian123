@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -13,11 +15,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	final int MENU = 0;
 	final int GAME = 1;
 	final int END = 2;
+	public static BufferedImage image;
+	public static boolean needImage = true;
+	public static boolean gotImage = false;	
 	Font titleFont;
 	Font startFont;
 	Font instructionFont;
 	Font gameOverFont;
 	Timer frameDraw;
+	Timer alienSpawn;
 	Rocketship ship = new Rocketship(250,750,50,50);
 	int currentState = MENU;
 	ObjectManager objectManager = new ObjectManager(ship);
@@ -28,6 +34,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		gameOverFont = new Font("Arial", Font.PLAIN, 48);
 		frameDraw = new Timer(1000/60,this);
 	    frameDraw.start();
+	    if (needImage) {
+	        loadImage ("space.png");
+	    }
 	}
 	@Override
 	public void paintComponent(Graphics g){
@@ -72,6 +81,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
 		objectManager.draw(g);
+		if (gotImage) {
+			g.drawImage(image, 0, 0, 500, 800, null);
+		} else {
+			g.setColor(Color.BLUE);
+			g.fillRect(0, 0, 500, 800);
+		}
+		ship.draw(g);
 	
 	}
 	void drawEndState(Graphics g) {
@@ -150,6 +166,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			   
 			}
 		}
+		startGame();
+		if(currentState == END) {
+			alienSpawn.stop();
+		}
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			objectManager.addProjectile(ship.getProjectile());
+		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -167,5 +190,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
 			ship.isMovingLeft = false;
 		}
+	}
+	void loadImage(String imageFile) {
+	    if (needImage) {
+	        try {
+	            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+		    gotImage = true;
+	        } catch (Exception e) {
+	            
+	        }
+	        needImage = false;
+	    }
+	}
+	void startGame() {
+		alienSpawn = new Timer(1000,objectManager);
+		alienSpawn.start();
 	}
 }
