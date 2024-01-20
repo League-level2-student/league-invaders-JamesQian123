@@ -19,14 +19,15 @@ public class Alien extends GameObject{
 	}
 	void update() {
 		y += speed;
+		super.update();
 	}
 	void draw(Graphics g) {
-		g.setColor(Color.YELLOW);
-        g.fillRect(x,y,width,height);
+		System.out.println("drawing alien");
+		
         if (gotImage) {
         	g.drawImage(image, x, y, width, height, null);
         } else {
-        	g.setColor(Color.BLUE);
+        	g.setColor(Color.YELLOW);
         	g.fillRect(x, y, width, height);
         }
 	}

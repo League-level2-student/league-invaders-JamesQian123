@@ -80,13 +80,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	void drawGameState(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
-		objectManager.draw(g);
 		if (gotImage) {
 			g.drawImage(image, 0, 0, 500, 800, null);
 		} else {
 			g.setColor(Color.BLUE);
 			g.fillRect(0, 0, 500, 800);
 		}
+		objectManager.draw(g);
+		
 		ship.draw(g);
 	
 	}
@@ -126,6 +127,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		        currentState = MENU;
 		    } else {
 		        currentState++;
+		        if(currentState == GAME) {
+		        	startGame();
+		        }
 		    }
 		}   
 		if(currentState == GAME) {
@@ -166,7 +170,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			   
 			}
 		}
-		startGame();
+		
 		if(currentState == END) {
 			alienSpawn.stop();
 		}

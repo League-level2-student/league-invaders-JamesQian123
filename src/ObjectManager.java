@@ -27,10 +27,13 @@ public class ObjectManager implements ActionListener{
 		}
 		for(Projectile p:projectiles) {
 			p.update();
-			if(p.y <= LeagueInvaders.HEIGHT) {
+			if(p.y <= 0) {
 				p.isActive = false;
 			}
 		}
+		checkCollision();
+		purgeObjects();
+		
 	}
 	void draw(Graphics g) {
 		rocket.draw(g);
@@ -57,6 +60,21 @@ public class ObjectManager implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		addAlien();
+	}
+	void checkCollision() {
+		for(Alien a:aliens) {
+			if(rocket.collisionBox.intersects(a.collisionBox)) {
+				a.isActive = false;
+				rocket.isActive = false;
+			}
+			for(Projectile p:projectiles) {
+				if(p.collisionBox.intersects(a.collisionBox)) {
+					a.isActive = false;
+					p.isActive = false;
+				}
+				
+			}
+		}
 	}
 	
 }
