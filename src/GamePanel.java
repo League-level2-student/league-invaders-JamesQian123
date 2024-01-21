@@ -59,7 +59,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	void updateGameState() {
 		ship.updatePos();
 		objectManager.update();
-		
+		if(!ship.isActive) {
+			currentState = END;
+		}
 	}
 	void updateEndState() {
 		
@@ -169,6 +171,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			    }
 			   
 			}
+			
 		}
 		
 		if(currentState == END) {
