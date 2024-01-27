@@ -17,56 +17,58 @@ public class Rocketship extends GameObject{
 		// TODO Auto-generated constructor stub
 		speed = 5;
 		if (needImage) {
-		    loadImage ("rocket.png");
+			loadImage ("rocket.png");
 		}
 	}
-void updatePos() {
-	if(isMovingUp && y > 0) {
-		up();
+	void updatePos() {
+		if(isMovingUp && y > 0) {
+			up();
+		}
+		if(isMovingDown && y < LeagueInvaders.HEIGHT-width) {
+			down();
+		}
+		if(isMovingRight && x < LeagueInvaders.WIDTH-width) {
+			right();
+		}
+		if(isMovingLeft && x > 0) {
+			left();
+		}
+		
+		super.update();
 	}
-	if(isMovingDown && y < LeagueInvaders.HEIGHT-width) {
-		down();
+	void draw(Graphics g) {
+
+		if (gotImage) {
+			g.drawImage(image, x, y, width, height, null);
+		} else {
+			g.setColor(Color.BLUE);
+			g.fillRect(x, y, width, height);
+		}
 	}
-	if(isMovingRight && x < LeagueInvaders.WIDTH-width) {
-		right();
+	void right() {
+		x+=speed;
 	}
-	if(isMovingLeft && x > 0) {
-		left();
+	void left() {
+		x-=speed;
 	}
-}
-void draw(Graphics g) {
-   
-    if (gotImage) {
-    	g.drawImage(image, x, y, width, height, null);
-    } else {
-    	g.setColor(Color.BLUE);
-    	g.fillRect(x, y, width, height);
-    }
-}
-void right() {
-	x+=speed;
-}
-void left() {
-	x-=speed;
-}
-void up() {
-	y-=speed;
-}
-void down() {
-	y+=speed;
-}
-void loadImage(String imageFile) {
-    if (needImage) {
-        try {
-            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
-	    gotImage = true;
-        } catch (Exception e) {
-            
-        }
-        needImage = false;
-    }
-}
-public Projectile getProjectile() {
-    return new Projectile(x+width/2, y, 10, 10);
-}
+	void up() {
+		y-=speed;
+	}
+	void down() {
+		y+=speed;
+	}
+	void loadImage(String imageFile) {
+		if (needImage) {
+			try {
+				image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+				gotImage = true;
+			} catch (Exception e) {
+
+			}
+			needImage = false;
+		}
+	}
+	public Projectile getProjectile() {
+		return new Projectile(x+width/2, y, 10, 10);
+	}
 }

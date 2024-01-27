@@ -33,15 +33,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		instructionFont = new Font("Arial", Font.PLAIN, 25);
 		gameOverFont = new Font("Arial", Font.PLAIN, 48);
 		frameDraw = new Timer(1000/60,this);
-	    frameDraw.start();
-	    if (needImage) {
-	        loadImage ("space.png");
-	    }
+		frameDraw.start();
+		if (needImage) {
+			loadImage ("space.png");
+		}
 	}
 	@Override
 	public void paintComponent(Graphics g){
 		//g.fillRect(10, 10, 100, 100);
-		
+
 		if(currentState == MENU) {
 			drawMenuState(g);
 		}
@@ -51,20 +51,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		else if(currentState == END) {
 			drawEndState(g);
 		}
-		
+
 	}
 	void updateMenuState() {
-		
+
 	}
 	void updateGameState() {
 		ship.updatePos();
 		objectManager.update();
 		if(!ship.isActive) {
 			currentState = END;
+		System.out.println("game should end");
 		}
+
+
 	}
 	void updateEndState() {
-		
+
 	}
 	void drawMenuState(Graphics g) {
 		g.setColor(Color.BLUE);
@@ -89,9 +92,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			g.fillRect(0, 0, 500, 800);
 		}
 		objectManager.draw(g);
-		
-		ship.draw(g);
-	
+
+//		ship.draw(g);
+		g.setColor(Color.BLUE);
+		g.drawString("Score:" + objectManager.getScore(), 20, 20);
 	}
 	void drawEndState(Graphics g) {
 		g.setColor(Color.RED);
@@ -107,73 +111,76 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(currentState == MENU){
-		    updateMenuState();
+			updateMenuState();
 		}else if(currentState == GAME){
-		    updateGameState();
+			updateGameState();
 		}else if(currentState == END){
-		    updateEndState();
+			updateEndState();
 		}
-		System.out.println("action");
 		repaint();
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
-		    if (currentState == END) {
-		        currentState = MENU;
-		    } else {
-		        currentState++;
-		        if(currentState == GAME) {
-		        	startGame();
-		        }
-		    }
-		}   
+			if (currentState == END) {
+				currentState = MENU;
+				ship = new Rocketship(250,750,50,50);
+				objectManager = new ObjectManager(ship);
+			} else {
+				currentState++;
+				if(currentState == GAME) {
+					startGame();
+				}
+			}
+			
+			
+		}    
 		if(currentState == GAME) {
 			if (e.getKeyCode()==KeyEvent.VK_UP) {
-			    System.out.println("UP");
-			    if(ship.y > 0) {
-			    	//ship.up();
-			    	ship.isMovingUp = true;
-			    	
-			    }
-			    
-			    }
-			
+				System.out.println("UP");
+				if(ship.y > 0) {
+					//ship.up();
+					ship.isMovingUp = true;
+
+				}
+
+			}
+
 			else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-			    System.out.println("DOWN");
-			    if(ship.y < LeagueInvaders.HEIGHT-50) {
-			    	//ship.down();
-			    	ship.isMovingDown = true;
-			    }
-			    
-			    
+				System.out.println("DOWN");
+				if(ship.y < LeagueInvaders.HEIGHT-50) {
+					//ship.down();
+					ship.isMovingDown = true;
+				}
+
+
 			}
 			else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-			    System.out.println("RIGHT");
-			    if(ship.x < LeagueInvaders.WIDTH-50) {
-			    	//ship.right();
-			    	ship.isMovingRight = true;
-			    }
-			   
-			    
+				System.out.println("RIGHT");
+				if(ship.x < LeagueInvaders.WIDTH-50) {
+					//ship.right();
+					ship.isMovingRight = true;
+				}
+
+
 			}
 			else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
-			    System.out.println("LEFT");
-			    if(ship.x > 0) {
-			    	//ship.left();
-			    	ship.isMovingLeft = true;
-			    }
-			   
+				System.out.println("LEFT");
+				if(ship.x > 0) {
+					//ship.left();
+					ship.isMovingLeft = true;
+				}
+
 			}
-			
+
 		}
-		
+
 		if(currentState == END) {
 			alienSpawn.stop();
 		}
@@ -186,7 +193,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		if (e.getKeyCode()==KeyEvent.VK_UP) {
 			ship.isMovingUp = false;
-	
+
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
 			ship.isMovingDown = false;
@@ -199,15 +206,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		}
 	}
 	void loadImage(String imageFile) {
-	    if (needImage) {
-	        try {
-	            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
-		    gotImage = true;
-	        } catch (Exception e) {
-	            
-	        }
-	        needImage = false;
-	    }
+		if (needImage) {
+			try {
+				image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+				gotImage = true;
+			} catch (Exception e) {
+
+			}
+			needImage = false;
+		}
 	}
 	void startGame() {
 		alienSpawn = new Timer(1000,objectManager);

@@ -4,12 +4,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JPanel;
+
 public class ObjectManager implements ActionListener{
 	Rocketship rocket;
 	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	ArrayList<Alien> aliens = new ArrayList<Alien>();
-	Integer score = 0;
+	private int score = 0;
 	Random rand = new Random();
+	
 	ObjectManager(Rocketship rocket){
 		this.rocket = rocket;
 	}
@@ -67,19 +70,22 @@ public class ObjectManager implements ActionListener{
 			if(rocket.collisionBox.intersects(a.collisionBox)) {
 				a.isActive = false;
 				rocket.isActive = false;
+				System.out.println("NICK");
 			}
+			
 			for(Projectile p:projectiles) {
 				if(p.collisionBox.intersects(a.collisionBox)) {
 					a.isActive = false;
 					p.isActive = false;
-					getScore();
+					score += 1;
 				}
 				
 			}
 		}
 	}
 	public int getScore() {
-		return score += 1;
+		return score; 
+		
 		}
 	}
 	

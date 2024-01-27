@@ -22,7 +22,7 @@ public class Alien extends GameObject{
 		super.update();
 	}
 	void draw(Graphics g) {
-		System.out.println("drawing alien");
+	
 		
         if (gotImage) {
         	g.drawImage(image, x, y, width, height, null);
